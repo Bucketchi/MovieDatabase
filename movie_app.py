@@ -114,14 +114,15 @@ class MovieApp:
 
     def _command_search_movie(self):
         movies = self._storage.list_movies()
-        while True:
-            # Gets search term from user
-            query = input("\nEnter part of the movie name: ")
-            # Prints movies that include search term
-            for movie in movies:
-                if query.lower() in movie.lower():
-                    print(f"{movie} : {movies[movie]['rating']}")
-                    return
+        # Gets search term from user
+        query = input("\nEnter part of the movie name: ")
+        found = False
+        # Prints movies that include search term
+        for movie in movies:
+            if query.lower() in movie.lower():
+                print(f"{movie} : {movies[movie]['rating']}")
+                found = True
+        if not found:
             print("Movie not in list.\n")
 
     def _command_sort_movies(self):
