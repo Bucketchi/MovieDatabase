@@ -3,6 +3,9 @@ import csv
 
 
 class StorageCsv(IStorage):
+    """
+    A class that defines the operations of the program when using the CSV format.
+    """
     def __init__(self, file_path):
         self.file_path = file_path
 

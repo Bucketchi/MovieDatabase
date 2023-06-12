@@ -3,6 +3,9 @@ import json
 
 
 class StorageJson(IStorage):
+    """
+    A class that defines the operations of the program when using the JSON format.
+    """
     def __init__(self, file_path):
         self.file_path = file_path
 
@@ -30,7 +33,6 @@ class StorageJson(IStorage):
             return dict_of_movies
 
     def add_movie(self, title, year, rating, poster_url, imdbID):
-
         """
         Adds a movie to the movie database.
         Loads the information from the JSON file, add the movie,
@@ -53,10 +55,10 @@ class StorageJson(IStorage):
 
     def delete_movie(self, title):
         """
-            Deletes a movie from the movie database.
-            Loads the information from the JSON file, deletes the movie,
-            and saves it. The function doesn't need to validate the input.
-            """
+        Deletes a movie from the movie database.
+        Loads the information from the JSON file, deletes the movie,
+        and saves it. The function doesn't need to validate the input.
+        """
         dict_of_movies = self.list_movies()
         del dict_of_movies[title]
         json_string = json.dumps(dict_of_movies)

@@ -9,11 +9,21 @@ IMDB_URL = "https://www.imdb.com/title/"
 
 
 class MovieApp:
+    """
+    A class that defines all the possible operations of the application. Requires a storage to passed
+    as an initializer.
+    """
     def __init__(self, storage):
         self._storage = storage
 
     @staticmethod
     def show_menu():
+        """
+        Prints the app menu to the terminal and receives input from
+        the user for their chosen operations.
+
+        Returns the choice as a string.
+        """
         print("""\n********** My Movies Database **********
 
     Menu:
@@ -33,6 +43,9 @@ class MovieApp:
         return choice
 
     def _command_list_movies(self):
+        """
+        Prints the list of movies and respective ratings to the terminal.
+        """
         movies = self._storage.list_movies()
         num_movies = len(movies)
         print(f"\n{num_movies} movies in total")
@@ -40,6 +53,10 @@ class MovieApp:
             print(f"{movie} ({info['year']}): {info['rating']} ")
 
     def _command_add_movie(self):
+        """
+        Receives a name as an input from the user and queries the OMDB API.
+        Adds the relevant data from the API to the file.
+        """
         new_movie = input("\nEnter movie name: ")
         try:
             res = requests.get(f"http://www.omdbapi.com/?apikey={API_KEY}&t={new_movie}")
@@ -57,6 +74,9 @@ class MovieApp:
             print(movie_info["Error"])
 
     def _command_delete_movie(self):
+        """
+        Receives a name as an input from the user and deletes the respective movie from the file.
+        """
         while True:  # Runs until valid movie title is entered
             movie_name = input("\nEnter a movie you want to delete: ")
 
@@ -68,6 +88,9 @@ class MovieApp:
             print("\nError: Movie not in list!")
 
     def _command_update_movie(self):
+        """
+        Requests a movie name from the user to add a note to said movie in the storage file.
+        """
         while True:  # Runs until valid movie title is entered
             movie_name = input("\nEnter a movie you want to update: ")
             movies = self._storage.list_movies()
@@ -78,6 +101,9 @@ class MovieApp:
             print("Movie is not in list!\n")
 
     def _command_movie_stats(self):
+        """
+        Processes the ratings from all the movies to then print a variety of stats to the terminal.
+        """
         movies = self._storage.list_movies()
         sorted_list_of_ratings = list(movies.items())
         sorted_list_of_ratings.sort(key=lambda x: x[1]["rating"], reverse=True)
@@ -108,11 +134,19 @@ class MovieApp:
                 print(f"{movie} : {info['rating']}", end="   ")
 
     def _command_random_movie(self):
+        """
+        Gets a random movie from the file and prints to the terminal along with
+        the respective rating.
+        """
         movies = self._storage.list_movies()
         random_selection = random.choice(list(movies))
         print(f"\n{random_selection} : {movies[random_selection]['rating']}")
 
     def _command_search_movie(self):
+        """
+        Requests a string from the user and prints all the movies that contain that
+        string.
+        """
         movies = self._storage.list_movies()
         # Gets search term from user
         query = input("\nEnter part of the movie name: ")
@@ -126,6 +160,9 @@ class MovieApp:
             print("Movie not in list.\n")
 
     def _command_sort_movies(self):
+        """
+        Processes the ratings of the movies to print a list from highest to lowest rated.
+        """
         movies = self._storage.list_movies()
         # Creates a sorted list of movies sorted by rating
         sorted_list_of_ratings = list(movies.items())
@@ -136,6 +173,10 @@ class MovieApp:
             print(f"{movie} : {info['rating']}")
 
     def _generate_website(self):
+        """
+        Parses all the data from the file to generate an HTML file
+        based on a template.
+        """
         movies = self._storage.list_movies()
         with open(TEMPLATE_HTML, "r") as template:
             html_data = template.read()
@@ -162,6 +203,10 @@ class MovieApp:
         print("Website was generated successfully.")
 
     def run(self):
+        """
+        Runs the application in the desired way, calling the Show Menu function
+        indefinitely until the user enters the Quit choice.
+        """
         while True:
             # Gets menu selection from user
             choice = self.show_menu()
